@@ -16,7 +16,7 @@ Adafruit_PWMServoDriver pwm[] = {
 uint8_t servonum = 3;
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   Serial.println("Starting serial servo controller...");
 
   for (int n = 0; n < NR_PWM_DRIVERS; n++) {
@@ -142,9 +142,9 @@ void loop() {
             Serial.print(servo, DEC);
             Serial.print(", pulse=");
             Serial.print(pulse, DEC);
-            Serial.print(", freq=");
-            int freq = pwm[board].getOscillatorFrequency();
-            Serial.print(freq, DEC);
+            //Serial.print(", freq=");
+            //int freq = pwm[board].getOscillatorFrequency();
+            //Serial.print(freq, DEC);
             Serial.println();
 
             // set pulse

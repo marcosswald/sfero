@@ -36,6 +36,7 @@ class MainWindow(QtWidgets.QMainWindow):
         uic.loadUi("mainwindow.ui", self)
 
         self.serial_interface = serial.Serial()
+        self.serial_interface.baudrate = 115200
         self.serial_interface.timeout = 0.01
 
         self.port_select.addItems(serial_ports())
@@ -47,7 +48,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.read_timer.timeout.connect(self.recurring_serial_read)
         self.read_timer.start()
 
-        self.pulse_slider.valueChanged.connect(self.pulse_slider_change)
+        self.pulse_value.valueChanged.connect(self.pulse_value_change)
 
     def start_clicked(self):
         self.serial_interface.port = self.port_select.currentText()
@@ -61,11 +62,17 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.console.insertPlainText(line.decode())
                 self.console.ensureCursorVisible()
 
-    def pulse_slider_change(self):
-        pulse = self.pulse_slider.value()
-        self.pulse_edit.setText(str(pulse))
+    def pulse_value_change(self):
+        pulse = self.pulse_value.value()
+        board = self.board_value.value()
+        servo = self.servo_value.value()
         if self.serial_interface.is_open:
-            command = "1 0 4 " + str(pulse) + "\r\n"
+            if self.hold_enable.isChecked():
+                # opcode 0x02 sets and holds servo position
+                command = "2 " + str(board) + " " + str(servo) + " " + str(pulse) + "\r"
+            else:
+                # opcode 0x01 sets and releases servo position
+                command = "1 " + str(board) + " " + str(servo) + " " + str(pulse) + "\r"
             self.serial_interface.write(command.encode())
 
 
