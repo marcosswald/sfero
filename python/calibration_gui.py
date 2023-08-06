@@ -8,6 +8,9 @@ from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6 import uic
 
+# global variables
+board_addresses = ["0x40", "0x60", "0x41"]
+
 def serial_ports():
         if sys.platform.startswith('win'):
             ports = ['COM%s' % (i + 1) for i in range(256)]
@@ -35,25 +38,39 @@ class MainWindow(QtWidgets.QMainWindow):
         super().__init__(*args, **kwargs)
         uic.loadUi("mainwindow.ui", self)
 
+        # setup default serial interface
         self.serial_interface = serial.Serial()
-        self.serial_interface.baudrate = 115200
         self.serial_interface.timeout = 0.01
 
+        # get available ports and add to combo box menu
         self.port_select.addItems(serial_ports())
 
-        self.start_button.clicked.connect(self.start_clicked)
+        # initialize default gui settings
+        self.servo_freq_value.setEnabled(False)
+        self.board_address_edit.setEnabled(False)
+        self.board_address_edit.setText(board_addresses[self.board_value.value()])
 
+        # serial port read timer
         self.read_timer = QTimer()
         self.read_timer.setInterval(100)
         self.read_timer.timeout.connect(self.recurring_serial_read)
         self.read_timer.start()
 
+        # connect slots and signals
+        self.start_button.clicked.connect(self.start_clicked)
         self.pulse_value.valueChanged.connect(self.pulse_value_change)
+        self.board_value.valueChanged.connect(self.board_value_change)
+        self.osc_freq_value.valueChanged.connect(self.osc_freq_value_change)
 
     def start_clicked(self):
         self.serial_interface.port = self.port_select.currentText()
         if not self.serial_interface.is_open:
+            self.serial_interface.baudrate = int(self.baud_select.currentText())
             self.serial_interface.open()
+            self.start_button.setText("Stop")
+        else:
+            self.serial_interface.close()
+            self.start_button.setText("Start")
 
     def recurring_serial_read(self):
         if self.serial_interface.is_open:
@@ -61,6 +78,17 @@ class MainWindow(QtWidgets.QMainWindow):
             for line in lines:
                 self.console.insertPlainText(line.decode())
                 self.console.ensureCursorVisible()
+
+    def board_value_change(self):
+        self.board_address_edit.setText(board_addresses[self.board_value.value()])
+
+    def osc_freq_value_change(self):
+        board = self.board_value.value()
+        freq = self.osc_freq_value.value()
+        if self.serial_interface.is_open:
+            # opcode 0x00 sets oscillator frequency
+            command = "0 " + str(board) + " " + str(freq) + "\r"
+            self.serial_interface.write(command.encode())
 
     def pulse_value_change(self):
         pulse = self.pulse_value.value()

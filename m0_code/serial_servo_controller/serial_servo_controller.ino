@@ -150,7 +150,6 @@ void loop() {
             // set pulse
             if (board < NR_PWM_DRIVERS) {
               pwm[board].setPWM(servo, 0, pulse);
-              delay(100);
             }
 
           } else {
