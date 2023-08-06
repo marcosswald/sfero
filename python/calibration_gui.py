@@ -14,6 +14,9 @@ from PyQt6 import uic
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 
+# global settings
+np.set_printoptions(precision=4)
+
 # global variables
 board_addresses = ["0x40", "0x60", "0x41"]
 
@@ -63,6 +66,9 @@ class MainWindow(QtWidgets.QMainWindow):
         super().__init__(*args, **kwargs)
         uic.loadUi("mainwindow.ui", self)
 
+        # calibration variables
+        self.model = np.array([])
+
         # setup default serial interface
         self.serial_interface = serial.Serial()
         self.serial_interface.timeout = 0.01
@@ -92,6 +98,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.osc_freq_value.lineEdit().returnPressed.connect(self.add_row_osc)
         self.calibrate_button.clicked.connect(self.calibrate_button_clicked)
         self.clear_button.clicked.connect(self.clear_button_clicked)
+        self.x_edit.editingFinished.connect(self.evaluate_y)
+        self.y_edit.editingFinished.connect(self.evaluate_x)
 
     def start_clicked(self):
         self.serial_interface.port = self.port_select.currentText()
@@ -161,7 +169,9 @@ class MainWindow(QtWidgets.QMainWindow):
                 y = np.append(y, float(self.calibration_table.item(i, 1).text()))
             
             # calculate fit
-            model = np.polyfit(x, y, 1)
+            self.model, res, _, _, _ = np.polyfit(x, y, 1, full=True)
+            self.coefficients_label.setText(str(self.model))
+            self.residuals_label.setText(str(res))
 
             # Create the maptlotlib FigureCanvas object,
             # which defines a single set of axes as self.axes.
@@ -169,13 +179,37 @@ class MainWindow(QtWidgets.QMainWindow):
 
             # plot data
             xn = np.linspace(x.min(),x.max(),100)
-            yn = np.poly1d(model)
+            yn = np.poly1d(self.model)
             sc.axes.plot(xn,yn(xn),x,y,'o')
 
             # create dialog and add canvas widget
             plot_dlg = PlotDialog(sc)
             plot_dlg.exec()
             
+        except Exception as error:
+            dlg = QMessageBox(self)
+            dlg.setWindowTitle("Error")
+            dlg.setText(type(error).__name__ + ": " + str(error))
+            dlg.exec()
+
+    def evaluate_x(self):
+        try:
+            y = float(self.y_edit.text())
+            x = (y - self.model[1]) / self.model[0]
+            self.x_edit.setText("{:.4f}".format(x))
+            print("eval x")
+        except Exception as error:
+            dlg = QMessageBox(self)
+            dlg.setWindowTitle("Error")
+            dlg.setText(type(error).__name__ + ": " + str(error))
+            dlg.exec()
+
+    def evaluate_y(self):
+        try:
+            print("eval y")
+            x = float(self.x_edit.text())
+            y = self.model[0] * x + self.model[1]
+            self.y_edit.setText("{:.4f}".format(y))
         except Exception as error:
             dlg = QMessageBox(self)
             dlg.setWindowTitle("Error")
