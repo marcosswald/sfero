@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>356</width>
-    <height>424</height>
+    <width>623</width>
+    <height>422</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -20,112 +20,116 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <layout class="QHBoxLayout" name="horizontalLayout_7">
     <item>
-     <widget class="QGroupBox" name="groupBox_2">
-      <property name="title">
-       <string>Serial Setup</string>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_3">
-       <item>
-        <widget class="QLabel" name="label_4">
-         <property name="text">
-          <string>Port:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QComboBox" name="port_select"/>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_9">
-         <property name="text">
-          <string>Baudrate:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QComboBox" name="baud_select">
-         <property name="currentIndex">
-          <number>1</number>
-         </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QGroupBox" name="groupBox_2">
+        <property name="title">
+         <string>Serial Setup</string>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
-          <property name="text">
-           <string>9600</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>115200</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="start_button">
-         <property name="text">
-          <string>Start</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer_5">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item>
-     <widget class="QGroupBox" name="groupBox_3">
-      <property name="title">
-       <string>Board Setup</string>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_4">
-         <item>
-          <widget class="QLabel" name="label">
+          <widget class="QLabel" name="label_4">
            <property name="text">
-            <string>Board:</string>
+            <string>Port:</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="board_value">
-           <property name="minimumSize">
+          <widget class="QComboBox" name="port_select"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_9">
+           <property name="text">
+            <string>Baudrate:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="baud_select">
+           <property name="currentIndex">
+            <number>1</number>
+           </property>
+           <item>
+            <property name="text">
+             <string>9600</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>115200</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="start_button">
+           <property name="text">
+            <string>Start</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_5">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
             <size>
-             <width>50</width>
-             <height>0</height>
+             <width>40</width>
+             <height>20</height>
             </size>
            </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-           <property name="maximum">
-            <number>2</number>
-           </property>
-          </widget>
+          </spacer>
          </item>
-         <item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBox_3">
+        <property name="title">
+         <string>Board Setup</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="0">
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="text">
+              <string>Board:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="board_value">
+             <property name="minimumSize">
+              <size>
+               <width>50</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="maximum">
+              <number>2</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="0" column="1">
           <widget class="QLabel" name="label_6">
            <property name="text">
             <string>Address:</string>
            </property>
           </widget>
          </item>
-         <item>
+         <item row="0" column="2">
           <widget class="QLineEdit" name="board_address_edit">
            <property name="minimumSize">
             <size>
@@ -139,13 +143,16 @@
              <height>16777215</height>
             </size>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
           </widget>
          </item>
-         <item>
-          <spacer name="horizontalSpacer_3">
+         <item row="0" column="3">
+          <spacer name="horizontalSpacer">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
@@ -157,18 +164,21 @@
            </property>
           </spacer>
          </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_5">
-         <item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_8">
+           <property name="text">
+            <string>Oscillator frequency (Hz):</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
           <widget class="QLabel" name="label_7">
            <property name="text">
             <string>Servo frequency (Hz):</string>
            </property>
           </widget>
          </item>
-         <item>
+         <item row="1" column="2">
           <widget class="QSpinBox" name="osc_freq_value">
            <property name="minimumSize">
             <size>
@@ -193,31 +203,7 @@
            </property>
           </widget>
          </item>
-         <item>
-          <spacer name="horizontalSpacer_2">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_6">
-         <item>
-          <widget class="QLabel" name="label_8">
-           <property name="text">
-            <string>Oscillator frequency (Hz):</string>
-           </property>
-          </widget>
-         </item>
-         <item>
+         <item row="2" column="2">
           <widget class="QSpinBox" name="servo_freq_value">
            <property name="minimumSize">
             <size>
@@ -242,8 +228,73 @@
            </property>
           </widget>
          </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBox">
+        <property name="title">
+         <string>PWM Output</string>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <spacer name="horizontalSpacer_4">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Servo:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="servo_value">
+           <property name="minimumSize">
+            <size>
+             <width>50</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+           <property name="maximum">
+            <number>7</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Pulse:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="pulse_value">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+           <property name="maximum">
+            <number>4095</number>
+           </property>
+           <property name="value">
+            <number>500</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="hold_enable">
+           <property name="text">
+            <string>Hold position</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_6">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
@@ -256,100 +307,63 @@
           </spacer>
          </item>
         </layout>
-       </item>
-      </layout>
-     </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBox_4">
+        <property name="title">
+         <string>Serial Monitor</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QTextEdit" name="console">
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
     </item>
     <item>
-     <widget class="QGroupBox" name="groupBox">
+     <widget class="QGroupBox" name="groupBox_5">
       <property name="title">
-       <string>PWM Output</string>
+       <string>Calibration</string>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>Servo:</string>
-         </property>
+        <widget class="QTableWidget" name="calibration_table">
+         <column>
+          <property name="text">
+           <string>X</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Y</string>
+          </property>
+         </column>
         </widget>
        </item>
        <item>
-        <widget class="QSpinBox" name="servo_value">
-         <property name="minimumSize">
-          <size>
-           <width>50</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="maximum">
-          <number>7</number>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>Pulse:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QSpinBox" name="pulse_value">
-         <property name="minimumSize">
-          <size>
-           <width>80</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="maximum">
-          <number>4095</number>
-         </property>
-         <property name="value">
-          <number>500</number>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="hold_enable">
-         <property name="text">
-          <string>Hold position</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer_6">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item>
-     <widget class="QGroupBox" name="groupBox_4">
-      <property name="title">
-       <string>Serial Monitor</string>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <widget class="QTextEdit" name="console">
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_8">
+         <item>
+          <widget class="QPushButton" name="clear_button">
+           <property name="text">
+            <string>Clear</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="calibrate_button">
+           <property name="text">
+            <string>Calibrate</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
      </widget>
@@ -361,7 +375,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>356</width>
+     <width>623</width>
      <height>22</height>
     </rect>
    </property>

@@ -1,6 +1,9 @@
 import sys
 import serial
 import glob
+import numpy as np
+import matplotlib
+matplotlib.use('Qt5Agg')
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtCore import *
@@ -8,9 +11,13 @@ from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6 import uic
 
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
+from matplotlib.figure import Figure
+
 # global variables
 board_addresses = ["0x40", "0x60", "0x41"]
 
+# helper function to list serial ports
 def serial_ports():
         if sys.platform.startswith('win'):
             ports = ['COM%s' % (i + 1) for i in range(256)]
@@ -32,6 +39,24 @@ def serial_ports():
                 pass
         return result
 
+# matplotlib canvas
+class MplCanvas(FigureCanvasQTAgg):
+
+    def __init__(self, parent=None, width=5, height=4, dpi=100):
+        fig = Figure(figsize=(width, height), dpi=dpi)
+        self.axes = fig.add_subplot(111)
+        super(MplCanvas, self).__init__(fig)
+
+# plot dialog
+class PlotDialog(QDialog, MplCanvas):
+
+    def __init__(self, mp_canvas):
+        super().__init__()
+        layout = QVBoxLayout()
+        layout.addWidget(mp_canvas)
+        self.setLayout(layout)
+
+# main window class
 class MainWindow(QtWidgets.QMainWindow):
 
     def __init__(self, *args, **kwargs):
@@ -49,6 +74,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.servo_freq_value.setEnabled(False)
         self.board_address_edit.setEnabled(False)
         self.board_address_edit.setText(board_addresses[self.board_value.value()])
+        self.pulse_value.setKeyboardTracking(False) # don't emit value changes while typing
+        self.osc_freq_value.setKeyboardTracking(False) # don't emit value changes while typing
 
         # serial port read timer
         self.read_timer = QTimer()
@@ -59,8 +86,12 @@ class MainWindow(QtWidgets.QMainWindow):
         # connect slots and signals
         self.start_button.clicked.connect(self.start_clicked)
         self.pulse_value.valueChanged.connect(self.pulse_value_change)
+        self.pulse_value.lineEdit().returnPressed.connect(self.add_row_pwm)
         self.board_value.valueChanged.connect(self.board_value_change)
         self.osc_freq_value.valueChanged.connect(self.osc_freq_value_change)
+        self.osc_freq_value.lineEdit().returnPressed.connect(self.add_row_osc)
+        self.calibrate_button.clicked.connect(self.calibrate_button_clicked)
+        self.clear_button.clicked.connect(self.clear_button_clicked)
 
     def start_clicked(self):
         self.serial_interface.port = self.port_select.currentText()
@@ -103,6 +134,53 @@ class MainWindow(QtWidgets.QMainWindow):
                 command = "1 " + str(board) + " " + str(servo) + " " + str(pulse) + "\r"
             self.serial_interface.write(command.encode())
 
+    def add_row_osc(self):
+        self.add_row(self.osc_freq_value.value())
+
+    def add_row_pwm(self):
+        self.add_row(self.pulse_value.value())
+
+    def add_row(self, x):
+        val, ok = QInputDialog.getText(self, 'Add measurement', 'Enter measured value for x=' + str(x))
+        if ok:
+            nrows = self.calibration_table.rowCount()
+            self.calibration_table.insertRow(nrows)
+            self.calibration_table.setItem(nrows, 0, QTableWidgetItem(str(x)))
+            self.calibration_table.setItem(nrows, 1, QTableWidgetItem(val))
+        
+    def clear_button_clicked(self):
+        self.calibration_table.setRowCount(0)
+        
+    def calibrate_button_clicked(self):
+        nrows = self.calibration_table.rowCount()
+        x = np.array([])
+        y = np.array([])
+        try:
+            for i in range(nrows):
+                x = np.append(x, float(self.calibration_table.item(i, 0).text()))
+                y = np.append(y, float(self.calibration_table.item(i, 1).text()))
+            
+            # calculate fit
+            model = np.polyfit(x, y, 1)
+
+            # Create the maptlotlib FigureCanvas object,
+            # which defines a single set of axes as self.axes.
+            sc = MplCanvas(self, width=5, height=4, dpi=100)
+
+            # plot data
+            xn = np.linspace(x.min(),x.max(),100)
+            yn = np.poly1d(model)
+            sc.axes.plot(xn,yn(xn),x,y,'o')
+
+            # create dialog and add canvas widget
+            plot_dlg = PlotDialog(sc)
+            plot_dlg.exec()
+            
+        except Exception as error:
+            dlg = QMessageBox(self)
+            dlg.setWindowTitle("Error")
+            dlg.setText(type(error).__name__ + ": " + str(error))
+            dlg.exec()
 
 app = QtWidgets.QApplication(sys.argv)
 window = MainWindow()
