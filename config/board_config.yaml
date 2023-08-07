@@ -1,0 +1,13 @@
+board_0:
+  board_id: 0
+  i2c_address: 0x40
+  osc_frequency: 24400000
+board_1:
+  board_id: 1
+  i2c_address: 0x60
+  osc_frequency: 26800000
+board_2:
+  board_id: 2
+  i2c_address: 0x41
+  osc_frequency: 26500000
+  

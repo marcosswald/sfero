@@ -197,7 +197,6 @@ class MainWindow(QtWidgets.QMainWindow):
             y = float(self.y_edit.text())
             x = (y - self.model[1]) / self.model[0]
             self.x_edit.setText("{:.4f}".format(x))
-            print("eval x")
         except Exception as error:
             dlg = QMessageBox(self)
             dlg.setWindowTitle("Error")
@@ -206,7 +205,6 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def evaluate_y(self):
         try:
-            print("eval y")
             x = float(self.x_edit.text())
             y = self.model[0] * x + self.model[1]
             self.y_edit.setText("{:.4f}".format(y))
