@@ -9,7 +9,7 @@ The internal oscillator of the PCA9865 chip on the Servo FeatherWing varies from
 1. Load the ```serial_servo_controller``` firmware
 2. Run ```calibration_gui.py```
 3. Select the COM port and start the serial communication
-4. Connect the oscilloscope prope to one of the PWM outputs and set the according channel and board in the GUI
+4. Connect the probe to one of the PWM outputs and set the according channel and board in the GUI
 5. Enter a pulse value and hit enter, you should see the PWM signal on the scope
 6. Add a measurement for the PWM frequency on the scope. This corresponds to the servo frequency (Hz) and should be close to 100Hz.
 7. Change the frequency value in the GUI and observe the measured servo frequency on the scope
