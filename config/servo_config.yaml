@@ -1,7 +1,8 @@
 servo_0:
   board_id: 0
   channel: 4
-  coefficients: [
-    0.2278,
-    -134.8451
-  ]
+  coefficients:
+  - 0.21992095465228753
+  - -128.46132763626753
+  osc_frequency: 24400000
+  servo_frequency: 100

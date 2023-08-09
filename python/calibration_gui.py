@@ -241,7 +241,9 @@ class MainWindow(QtWidgets.QMainWindow):
                         raise TypeError("Currently only items of type 'servo' are supported!")
             # create the new item
             item_name = item_base_name + "_" + str(int(item_index) + 1)
-            item_dict[item_name] = {"board_id": self.board_value.value(), 
+            item_dict[item_name] = {"board_id": self.board_value.value(),
+                                    "osc_frequency": self.osc_freq_value.value(),
+                                    "servo_frequency": self.servo_freq_value.value(),
                                     "channel": self.servo_value.value(),
                                     "coefficients": self.model.tolist()}
             with open(filepath, 'w') as file:
