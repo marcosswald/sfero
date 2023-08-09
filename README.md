@@ -4,7 +4,7 @@ A robot that can walk and roll and is trained with RL
 ## Calibration
 
 ### Oscillator
-The internal oscillator of the PCA9865 chip on the Servo FeatherWing varies from board to board. Therefore the precise frequency needs to be measured and taken into account for generating accurate PWM control signals. To measure the oscillaotr frequency, the ```calibration_gui``` can be used. This GUI requires the ```serial_servo_controller``` firmware to be loaded. Furthermore an oscilloscope is needed to measure a dependent metric such as the PWM frequency for example.
+The internal oscillator of the PCA9865 chip on the Servo FeatherWing varies from board to board. Therefore the precise frequency needs to be measured and taken into account for generating accurate PWM control signals. To measure the oscillator frequency, the ```calibration_gui``` can be used. This GUI requires the ```serial_servo_controller``` firmware to be loaded. Furthermore an oscilloscope is needed to measure a dependent metric such as the PWM frequency for example.
 
 1. Load the ```serial_servo_controller``` firmware
 2. Run ```calibration_gui.py```

@@ -1,0 +1,7 @@
+servo_0:
+  board_id: 0
+  channel: 4
+  coefficients: [
+    0.2278,
+    -134.8451
+  ]
