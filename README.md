@@ -1,5 +1,17 @@
-# sferobot
+# sfero
 A robot that can walk and roll and is trained with RL
+
+## Mechanical
+The current design is based on Power HD's DSM44 high-speed digital micro servos. Each of the six legs has 3 degrees of freedom, yielding a total 18 DoF. The sphere radius is 10cm.
+
+Sfero in agile rolling stance (all directions):
+![Rolling](/doc/cad/img/sfero_roll.png)
+
+Sfero in walking stance:
+![Walking](/doc/cad/img/sfero_walk.png)
+
+Sfero in fast rolling stance (only along one direction):
+![Fast rolling](/doc/cad/img/sfero_stretch.png)
 
 ## Calibration
 
@@ -17,16 +29,17 @@ The internal oscillator of the PCA9865 chip on the Servo FeatherWing varies from
 9. Hit 'Calibrate' to run get a linear fit on the data points
 10. Get an estimate of the real oscillator frequency 'X' by entering the servo frequency (100Hz) into the 'Y' field and hitting enter.
 
-![Calibration GUI](/doc/img/osc_calib_gui.png)
-![Oscillator calibration plot](/doc/img/osc_calib_plot.png)
+![Calibration GUI](/doc/calibration/img/osc_calib_gui.png)
+
+![Oscillator calibration plot](/doc/calibration/img/osc_calib_plot.png)
 
 ### Servo
-Servos positions are controlled proportionally to the input pulse width where a duration of ~1.5ms usually depicts the neutral position. However, gain aand offset vary in each servo and therefore need to be calibrated. We use a 3d printed calibration tool with known angular positions and measure the pulse durations that move the servo to the according positions. A linear regression is then applied to the data points which yields the gain and offset. The procedure is similar to the oscillator calibration but we don't need the oscilloscope. Instead we manually change the servo position (by using up and down arrow keys on the pulse edit field) until it matches with one of the known angular positions of the calibration target.
+Servo positions are controlled with the PWM pulse width where a duration of ~1.5ms usually depicts the neutral position. However, gain and offset vary in each servo and therefore need to be calibrated. We use a 3d printed calibration tool with known angular positions and measure the pulse widths that move the servo to the according positions. A linear regression is then applied to the data points which yields the gain and offset. The procedure is similar to the oscillator calibration but we don't need the oscilloscope. Instead we manually change the servo position (by using up and down arrow keys on the pulse edit field) until it matches with one of the known angular positions of the calibration target.
 
-![Servo calibration](/doc/img/servo_calib_img.jpg)
-Calibration measurements should be taken over the entire range of the servos operaiton. In the image above, the joint collides with the calibration target for positions on the lower circle. In that case, a separate calibration target (mirrored version) can be used to acquire the missing measurements. This may introduce an additional error since there might be a small angular offset between the targets. It is currently assumed that this error is not significant.
+![Servo calibration](/doc/calibration/img/servo_calib_img.jpg)
+Calibration measurements should be taken over the entire range of the servo's operation. In the image above, the joint collides with the calibration target for positions on the lower circle. In that case, a separate calibration target (mirrored version) can be used to acquire the missing measurements. This may introduce an additional error since there might be a small angular offset between the targets. It is currently assumed that this error is not significant.
 
-![Calibration GUI](/doc/img/osc_calib_gui.png)
-![Servo calibration plot](/doc/img/servo_calib_plot.png)
+![Calibration GUI](/doc/calibration/img/osc_calib_gui.png)
 
+![Servo calibration plot](/doc/calibration/img/servo_calib_plot.png)
 With an RSE~=1.7° the linear fit suggests that the model is good for the example shown above (RSS=40, n=16, RSE=sqrt(RSS/n-2)~=1.7). There is noticable backlash from the gears which probably is responsible for the largest part of the error. To get the best model, each data point should be measured twice by approaching it from both directions (CW and CCW).
