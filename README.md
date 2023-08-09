@@ -23,7 +23,7 @@ The internal oscillator of the PCA9865 chip on the Servo FeatherWing varies from
 ### Servo
 Servos positions are controlled proportionally to the input pulse width where a duration of ~1.5ms usually depicts the neutral position. However, gain aand offset vary in each servo and therefore need to be calibrated. We use a 3d printed calibration tool with known angular positions and measure the pulse durations that move the servo to the according positions. A linear regression is then applied to the data points which yields the gain and offset. The procedure is similar to the oscillator calibration but we don't need the oscilloscope. Instead we manually change the servo position (by using up and down arrow keys on the pulse edit field) until it matches with one of the known angular positions of the calibration target.
 
-![Servo calibration](/doc/img/servo_calib_img.png)
+![Servo calibration](/doc/img/servo_calib_img.jpg)
 Calibration measurements should be taken over the entire range of the servos operaiton. In the image above, the joint collides with the calibration target for positions on the lower circle. In that case, a separate calibration target (mirrored version) can be used to acquire the missing measurements. This may introduce an additional error since there might be a small angular offset between the targets. It is currently assumed that this error is not significant.
 
 ![Calibration GUI](/doc/img/osc_calib_gui.png)
