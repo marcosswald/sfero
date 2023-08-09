@@ -1,6 +1,8 @@
 import sys
 import serial
 import glob
+import os.path
+import yaml
 import numpy as np
 import matplotlib
 matplotlib.use('Qt5Agg')
@@ -64,7 +66,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        uic.loadUi("mainwindow.ui", self)
+        uic.loadUi("calibration_gui.ui", self)
 
         # calibration variables
         self.model = np.array([])
@@ -100,6 +102,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.clear_button.clicked.connect(self.clear_button_clicked)
         self.x_edit.editingFinished.connect(self.evaluate_y)
         self.y_edit.editingFinished.connect(self.evaluate_x)
+        self.save_model_button.clicked.connect(self.save_model_clicked)
 
     def start_clicked(self):
         self.serial_interface.port = self.port_select.currentText()
@@ -208,6 +211,41 @@ class MainWindow(QtWidgets.QMainWindow):
             x = float(self.x_edit.text())
             y = self.model[0] * x + self.model[1]
             self.y_edit.setText("{:.4f}".format(y))
+        except Exception as error:
+            dlg = QMessageBox(self)
+            dlg.setWindowTitle("Error")
+            dlg.setText(type(error).__name__ + ": " + str(error))
+            dlg.exec()
+
+    def save_model_clicked(self):
+        try:
+            if self.model.size == 0:
+                raise ValueError("Nothing to save.")
+            save_dlg = QFileDialog(self, directory="../config")
+            save_dlg.setAcceptMode(QFileDialog.AcceptMode.AcceptSave)
+            save_dlg.setDefaultSuffix("yaml")
+            save_dlg.setOption(QFileDialog.Option.DontConfirmOverwrite)
+            save_dlg.setLabelText(QFileDialog.DialogLabel.Accept, "Save/Append")
+            #save_dlg.currentChanged.connect(lambda f: save_dlg.setLabelText(QFileDialog.DialogLabel.Accept, "Append") if os.path.isfile(f) else save_dlg.setLabelText(QFileDialog.DialogLabel.Accept, "Save"))
+            save_dlg.exec()
+            filepath = save_dlg.selectedFiles()[0]
+            item_base_name = "servo" # only servo config files are supported at the moment
+            item_index = -1
+            item_dict = {}
+            # open and load config file
+            if os.path.isfile(filepath):
+                with open(filepath,'r') as file:
+                    item_dict = yaml.load(file, Loader=yaml.FullLoader)
+                    item_base_name, item_index = list(item_dict)[-1].split("_")
+                    if item_base_name != "servo":
+                        raise TypeError("Currently only items of type 'servo' are supported!")
+            # create the new item
+            item_name = item_base_name + "_" + str(int(item_index) + 1)
+            item_dict[item_name] = {"board_id": self.board_value.value(), 
+                                    "channel": self.servo_value.value(),
+                                    "coefficients": self.model.tolist()}
+            with open(filepath, 'w') as file:
+                yaml.dump(item_dict, file)
         except Exception as error:
             dlg = QMessageBox(self)
             dlg.setWindowTitle("Error")
