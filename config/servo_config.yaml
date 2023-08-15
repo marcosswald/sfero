@@ -5,8 +5,8 @@ servo_0:
   - 0.21992095465228753
   - -128.46132763626753
   input_limits:
-  - 0
-  - 0
+  - 170
+  - 990
   osc_frequency: 24400000
   servo_frequency: 100
 servo_1:
@@ -19,6 +19,17 @@ servo_1:
   - 450
   - 920
   osc_frequency: 24400000
+  servo_frequency: 100
+servo_10:
+  board_id: 2
+  channel: 3
+  coefficients:
+  - 0.23258186926909744
+  - -142.3982494600049
+  input_limits:
+  - 227.0
+  - 1013.0
+  osc_frequency: 26500000
   servo_frequency: 100
 servo_2:
   board_id: 0
@@ -74,4 +85,37 @@ servo_6:
   - 453.0
   - 924.0
   osc_frequency: 26500000
+  servo_frequency: 100
+servo_7:
+  board_id: 0
+  channel: 3
+  coefficients:
+  - 0.23449376803585678
+  - -138.55650518818686
+  input_limits:
+  - 203.0
+  - 979.0
+  osc_frequency: 24400000
+  servo_frequency: 100
+servo_8:
+  board_id: 1
+  channel: 3
+  coefficients:
+  - 0.22193106819848468
+  - -141.25912490833542
+  input_limits:
+  - 231.0
+  - 1050.0
+  osc_frequency: 26800000
+  servo_frequency: 100
+servo_9:
+  board_id: 1
+  channel: 4
+  coefficients:
+  - 0.22425182147501013
+  - -139.77896347314223
+  input_limits:
+  - 228.0
+  - 1033.0
+  osc_frequency: 26800000
   servo_frequency: 100
