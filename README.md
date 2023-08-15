@@ -40,7 +40,7 @@ Servo positions are controlled with the PWM pulse width where a duration of ~1.5
 
 Calibration measurements should be taken over the entire range of the servo's operation. In the image above, the joint collides with the calibration target for positions on the lower circle. In that case, a separate calibration target (mirrored version) can be used to acquire the missing measurements. This may introduce an additional error since there might be a small angular offset between the targets. It is currently assumed that this error is not significant.
 
-![Calibration GUI](/doc/img/calibration/osc_calib_gui.png)
+![Calibration GUI](/doc/img/calibration/servo_calib_gui.png)
 
 ![Servo calibration plot](/doc/img/calibration/servo_calib_plot.png)
 
