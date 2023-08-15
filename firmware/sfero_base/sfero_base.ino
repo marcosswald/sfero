@@ -1,6 +1,9 @@
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
 
+#define NR_LEGS 6
+#define NR_JOINTS_PER_LEG 3
+
 #define NR_PWM_DRIVERS 3
 #define NR_PWM_CHANNELS 8
 // pwm drivers
@@ -34,7 +37,7 @@ struct Leg {
     : upper_(_upper), mid_(_mid), lower_(_lower) {}
 };
 // map that stores which servos are connected to which leg
-Leg legs[] = {
+Leg legs[NR_LEGS] = {
   Leg(ServoId(0, 4), ServoId(0, 5), ServoId(0, 6)),  // leg 0
   Leg(ServoId(1, 4), ServoId(1, 5), ServoId(1, 6)),  // leg 1
   Leg(ServoId(2, 4), ServoId(2, 5), ServoId(2, 6)),  // leg 2
@@ -85,6 +88,26 @@ ServoCalibData servo_calib[NR_PWM_DRIVERS][NR_PWM_CHANNELS] = {
   },
 };
 
+int angleToPulse(float angle_deg, ServoId servo) {
+  ServoCalibData &calib_data = servo_calib[servo.board_id_][servo.channel_];
+  return int((angle_deg - calib_data.p_[1]) / calib_data.p_[0]);
+}
+
+bool setPWM(ServoId servo, int pulse) {
+  ServoCalibData &calib_data = servo_calib[servo.board_id_][servo.channel_];
+  pulse = (pulse < calib_data.range_[0]) ? calib_data.range_[0] : pulse;
+  pulse = (pulse > calib_data.range_[1]) ? calib_data.range_[1] : pulse;
+  pwm[servo.board_id_].setPWM(servo.channel_, 0, pulse);
+
+  Serial.print("\tSetting servo (");
+  Serial.print(servo.board_id_);
+  Serial.print(".");
+  Serial.print(servo.channel_);
+  Serial.print(") pulse to ");
+  Serial.println(pulse);
+  return true;
+}
+
 void setup() {
   Serial.begin(115200);
   Serial.println("Starting sfero base...");
@@ -98,4 +121,29 @@ void setup() {
 }
 
 void loop() {
+
+  delay(5000);
+
+  // move legs
+  for (int i = 0; i < NR_LEGS; i++) {
+    Serial.print("Moving leg[");
+    Serial.print(i);
+    Serial.println("]");
+
+    // move upper joint to neutral position
+    int pulse = angleToPulse(0, legs[i].upper_);
+    setPWM(legs[i].upper_, pulse);
+
+    // move mid joint to neutral position
+    pulse = angleToPulse(0, legs[i].mid_);
+    setPWM(legs[i].mid_, pulse);
+
+    // move lower joint to neutral position
+    pulse = angleToPulse(0, legs[i].lower_);
+    setPWM(legs[i].lower_, pulse);
+  }
+
+  while (1) {
+    delay(100);
+  }
 }
