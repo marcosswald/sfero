@@ -103,6 +103,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.x_edit.editingFinished.connect(self.evaluate_y)
         self.y_edit.editingFinished.connect(self.evaluate_x)
         self.save_model_button.clicked.connect(self.save_model_clicked)
+        self.delete_button.clicked.connect(self.delete_button_clicked)
 
     def start_clicked(self):
         self.serial_interface.port = self.port_select.currentText()
@@ -161,6 +162,11 @@ class MainWindow(QtWidgets.QMainWindow):
         
     def clear_button_clicked(self):
         self.calibration_table.setRowCount(0)
+
+    def delete_button_clicked(self):
+        indices = self.calibration_table.selectionModel().selectedRows()
+        for index in reversed(sorted(indices)):
+            self.calibration_table.removeRow(index.row())
         
     def calibrate_button_clicked(self):
         nrows = self.calibration_table.rowCount()
@@ -175,6 +181,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.model, res, _, _, _ = np.polyfit(x, y, 1, full=True)
             self.coefficients_label.setText(str(self.model))
             self.residuals_label.setText(str(res))
+            self.input_limits = np.array([x.min(), x.max()])
 
             # Create the maptlotlib FigureCanvas object,
             # which defines a single set of axes as self.axes.
@@ -245,7 +252,8 @@ class MainWindow(QtWidgets.QMainWindow):
                                     "osc_frequency": self.osc_freq_value.value(),
                                     "servo_frequency": self.servo_freq_value.value(),
                                     "channel": self.servo_value.value(),
-                                    "coefficients": self.model.tolist()}
+                                    "coefficients": self.model.tolist(),
+                                    "input_limits": self.input_limits.tolist()}
             with open(filepath, 'w') as file:
                 yaml.dump(item_dict, file)
         except Exception as error:

@@ -362,9 +362,16 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_8">
          <item>
+          <widget class="QPushButton" name="delete_button">
+           <property name="text">
+            <string>Delete</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QPushButton" name="clear_button">
            <property name="text">
-            <string>Clear</string>
+            <string>Clear All</string>
            </property>
           </widget>
          </item>
