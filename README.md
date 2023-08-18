@@ -1,7 +1,7 @@
 # sfero
 A robot that can walk and roll and is trained with RL
 
-<video src="/doc/video/roll_stance_test.mp4" controls title="roll stance test"></video>
+<video src="/doc/video/roll_stance_test_short.mp4" controls title="roll stance test"></video>
 
 ## Mechanical
 The current design is based on Power HD's DSM44 high-speed digital micro servos. Each of the six legs has 3 degrees of freedom, yielding a total 18 DoF. The sphere radius is 10cm.
