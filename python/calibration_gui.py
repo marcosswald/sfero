@@ -111,6 +111,11 @@ class MainWindow(QtWidgets.QMainWindow):
             self.serial_interface.baudrate = int(self.baud_select.currentText())
             self.serial_interface.open()
             self.start_button.setText("Stop")
+
+            # reset all servos positions
+            command = str(0xFF) + "\r"
+            self.serial_interface.write(command.encode())
+
         else:
             self.serial_interface.close()
             self.start_button.setText("Start")
